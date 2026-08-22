@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>lefobox.gomc.fun</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  color:#fff;
+  background:#06111f;
+  -webkit-font-smoothing:antialiased;
+}
+button{font:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+button{cursor:pointer}
+
+.app{
+  position:relative;width:100%;height:100vh;overflow:hidden;
+  background:
+    radial-gradient(circle at 15% 20%,rgba(0,174,255,.22),transparent 32%),
+    radial-gradient(circle at 85% 80%,rgba(95,45,255,.22),transparent 35%),
+    linear-gradient(135deg,#071b2b,#06101c 55%,#080d20);
+}
+.app:before{
+  content:"";position:absolute;inset:0;opacity:.16;
+  background-image:
+    linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.glow{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none}
+.glow.a{width:330px;height:330px;background:#008dff;left:-130px;top:-100px;opacity:.24}
+.glow.b{width:380px;height:380px;background:#723dff;right:-160px;bottom:-160px;opacity:.2}
+
+nav{
+  position:relative;z-index:10;height:84px;
+  display:flex;align-items:center;justify-content:space-between;
+  max-width:1400px;margin:auto;padding:0 34px;
+}
+.logo{display:flex;align-items:center;gap:11px;font-size:25px;font-weight:800;letter-spacing:-.5px}
+.logo-mark{width:35px;height:35px;border-radius:9px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#35c8ff,#526cff);box-shadow:0 0 25px rgba(30,177,255,.3)}
+.logo-mark:before{content:"L";font-weight:900;font-size:20px}
+.nav-links{display:flex;gap:10px}
+.nav-link,.nav-play{
+  border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);
+  color:#dceeff;border-radius:11px;padding:11px 17px;transition:.25s;
+}
+.nav-link:hover{background:rgba(255,255,255,.1)}
+.nav-play{background:#fff;color:#07101c;font-weight:700}
+
+.hero{
+  position:relative;z-index:2;height:calc(100vh - 84px);
+  max-width:1400px;margin:auto;padding:0 34px 40px;
+  display:flex;align-items:center;
+}
+.hero-content{max-width:760px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 12px;
+  border:1px solid rgba(93,198,255,.2);border-radius:999px;
+  color:#8ddcff;background:rgba(34,161,255,.07);font-size:13px;margin-bottom:20px
+}
+.dot{width:7px;height:7px;border-radius:50%;background:#43d8ff;box-shadow:0 0 12px #43d8ff}
+h1{font-size:clamp(46px,7vw,88px);line-height:.94;letter-spacing:-4px;max-width:760px}
+h1 span{color:#55cfff}
+.subtitle{margin-top:25px;max-width:650px;color:rgba(235,248,255,.65);font-size:18px;line-height:1.55}
+.actions{display:flex;flex-wrap:wrap;gap:13px;margin-top:32px}
+.primary,.secondary{
+  min-height:52px;padding:0 23px;border-radius:13px;border:1px solid transparent;
+  transition:.25s;font-weight:700
+}
+.primary{background:linear-gradient(135deg,#27baff,#516dff);color:#fff;box-shadow:0 10px 35px rgba(42,150,255,.2)}
+.primary:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.secondary{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.12);color:#fff}
+.secondary:hover{background:rgba(255,255,255,.12);transform:translateY(-2px)}
+
+.bottom{
+  position:absolute;z-index:5;left:34px;right:34px;bottom:24px;
+  max-width:1332px;margin:auto;display:flex;justify-content:space-between;align-items:center;
+  color:rgba(255,255,255,.4);font-size:12px
+}
+.contact-bottom{border:0;background:none;color:#9bdfff;text-decoration:underline;cursor:pointer}
+
+.overlay{
+  position:fixed;inset:0;z-index:100;visibility:hidden;opacity:0;
+  transition:opacity .4s ease,visibility .4s ease
+}
+.overlay.open{visibility:visible;opacity:1}
+.overlay-bg{
+  position:absolute;inset:0;background:rgba(2,8,15,.68);
+  backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)
+}
+.panel{
+  position:absolute;left:0;top:0;bottom:0;width:min(610px,94vw);
+  background:linear-gradient(180deg,rgba(9,24,39,.98),rgba(7,15,27,.98));
+  border-right:1px solid rgba(255,255,255,.1);
+  padding:105px 30px 35px;overflow:auto;
+  transform:translateX(-105%);
+  transition:transform .65s cubic-bezier(.16,1,.3,1);
+  box-shadow:30px 0 100px rgba(0,0,0,.5)
+}
+.overlay.open .panel{transform:translateX(0)}
+
+.close{
+  position:absolute;left:22px;top:20px;width:58px;height:58px;
+  border-radius:15px;border:2px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.11);color:#fff;
+  transition:.3s;box-shadow:0 8px 30px rgba(0,0,0,.35)
+}
+.close:hover{transform:rotate(90deg) scale(1.07);background:rgba(255,255,255,.22)}
+.close:before,.close:after{
+  content:"";position:absolute;left:50%;top:50%;width:29px;height:3px;
+  background:#fff;border-radius:5px;box-shadow:0 0 8px #fff;
+}
+.close:before{transform:translate(-50%,-50%) rotate(45deg)}
+.close:after{transform:translate(-50%,-50%) rotate(-45deg)}
+
+.panel h2{font-size:34px;letter-spacing:-1px}
+.panel-desc{margin-top:7px;margin-bottom:24px;color:rgba(255,255,255,.48);font-size:14px}
+.donations{display:flex;flex-direction:column;gap:11px}
+.donation{
+  display:flex;align-items:center;justify-content:space-between;gap:15px;
+  padding:17px;border:1px solid rgba(255,255,255,.09);
+  background:rgba(255,255,255,.055);border-radius:14px;
+  opacity:0;transform:translateX(-35px)
+}
+.overlay.open .donation{opacity:1;transform:none;transition:opacity .45s,transform .55s cubic-bezier(.16,1,.3,1)}
+.overlay.open .donation:nth-child(1){transition-delay:.1s}
+.overlay.open .donation:nth-child(2){transition-delay:.16s}
+.overlay.open .donation:nth-child(3){transition-delay:.22s}
+.overlay.open .donation:nth-child(4){transition-delay:.28s}
+.overlay.open .donation:nth-child(5){transition-delay:.34s}
+.d-name{font-size:18px;font-weight:700}
+.d-price{margin-top:4px;color:#8aa4ba;font-size:14px}
+.buy{border:0;border-radius:10px;padding:10px 17px;background:#754cff;color:#fff;font-weight:700;transition:.25s}
+.buy:hover{transform:translateY(-2px);background:#8d6aff}
+
+.main-note{
+  margin-top:35px;padding:20px;border-radius:16px;
+  border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);
+  color:rgba(235,248,255,.65);line-height:1.65;font-size:14px
+}
+.main-note strong{color:#fff}
+
+.contact-box{
+  position:absolute;left:50%;top:50%;width:min(510px,calc(100vw - 32px));
+  transform:translate(-50%,-46%) scale(.94);
+  background:rgba(10,23,37,.97);border:1px solid rgba(255,255,255,.11);
+  border-radius:22px;padding:88px 24px 25px;box-shadow:0 30px 100px rgba(0,0,0,.55);
+  transition:transform .5s cubic-bezier(.16,1,.3,1)
+}
+.overlay.open .contact-box{transform:translate(-50%,-50%) scale(1)}
+.contact-box .close{top:20px;left:20px}
+.contact-title{text-align:center;font-size:29px}
+.contact-desc{text-align:center;margin:8px 0 23px;color:rgba(255,255,255,.48);font-size:14px}
+.owner-buttons{display:flex;flex-direction:column;gap:11px}
+.owner{
+  width:100%;height:54px;border-radius:13px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.06);color:#fff;font-weight:700;transition:.3s
+}
+.owner:hover{background:rgba(255,255,255,.12);transform:translateX(4px)}
+.owner small{display:block;color:#7f9bb2;font-weight:400;margin-top:3px}
+
+.ip-box{text-align:center;padding-top:20px}
+.ip-box h2{font-size:31px}
+.ip-box p{color:rgba(255,255,255,.48);font-size:14px;margin:8px 0 20px}
+.ip-row{display:flex;gap:9px}
+.ip{
+  flex:1;height:52px;border-radius:12px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(0,0,0,.25);color:#fff;padding:0 14px;font-weight:700
+}
+.copy{height:52px;padding:0 17px;border:0;border-radius:12px;background:#fff;color:#07101c;font-weight:800}
+.copy.ok{background:#58df9b}
+.check{display:inline-block;margin-left:5px;transform:scale(0);transition:.3s}
+.copy.ok .check{transform:scale(1)}
+.tg-button{
+  width:100%;height:53px;border:0;border-radius:13px;background:#794cff;color:#fff;
+  font-weight:800;margin-top:14px;transition:.25s
+}
+.tg-button:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.tg-link{display:none;margin-top:13px;padding:14px;border-radius:12px;background:rgba(255,255,255,.06);color:#82d8ff;text-decoration:none}
+.tg-link.visible{display:block;animation:pop .45s ease}
+
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.hero-content>*{animation:up .8s cubic-bezier(.16,1,.3,1) both}
+.hero-content .eyebrow{animation-delay:.05s}.hero-content h1{animation-delay:.15s}
+.hero-content .subtitle{animation-delay:.28s}.hero-content .actions{animation-delay:.4s}
+
+.contact-bottom{
+  position:absolute;z-index:8;left:50%;bottom:24px;transform:translateX(-50%);
+  min-width:230px;height:52px;padding:0 23px;border-radius:13px;
+  border:1px solid rgba(255,255,255,.12);
+  background:linear-gradient(135deg,#27baff,#516dff);
+  color:#fff;font-weight:700;font-size:15px;
+  box-shadow:0 10px 35px rgba(42,150,255,.2);
+  transition:.25s
+}
+.contact-bottom:hover{transform:translateX(-50%) translateY(-2px);filter:brightness(1.08)}
+.buying-box{
+  position:absolute;left:50%;top:50%;width:min(430px,calc(100vw - 32px));
+  transform:translate(-50%,-46%) scale(.9);
+  background:rgba(10,23,37,.98);border:1px solid rgba(255,255,255,.12);
+  border-radius:22px;padding:82px 25px 30px;text-align:center;
+  box-shadow:0 30px 100px rgba(0,0,0,.6);
+  opacity:0;transition:transform .5s cubic-bezier(.16,1,.3,1),opacity .35s
+}
+.overlay.open .buying-box{transform:translate(-50%,-50%) scale(1);opacity:1}
+.buying-box h2{font-size:35px}
+.buying-box p{margin-top:10px;color:rgba(255,255,255,.55);font-size:16px}
+
+@media(max-width:760px){
+  .contact-bottom{min-width:calc(100vw - 40px);bottom:17px}
+  nav{height:72px;padding:0 18px}.nav-links .nav-link{display:none}.nav-play{padding:9px 13px;font-size:13px}
+  .hero{height:calc(100vh - 72px);padding:0 20px 70px}
+  h1{font-size:48px;letter-spacing:-2.5px}.subtitle{font-size:16px}
+  .bottom{left:20px;right:20px;bottom:17px}.bottom span{display:none}
+  .panel{width:94vw;padding:95px 20px 25px}.panel h2{font-size:29px}
+  .contact-box{padding:86px 18px 20px}.ip-row{flex-direction:column}.copy{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="glow a"></div><div class="glow b"></div>
+
+  <nav>
+    <div class="logo"><div class="logo-mark"></div><span>lefobox.gomc.fun</span></div>
+    <div class="nav-links">
+      <button class="nav-link" id="navDonate">Донаты</button>
+      <button class="nav-play" id="navPlay">Начать играть</button>
+    </div>
+  </nav>
+
+  <main class="hero">
+    <div class="hero-content">
+      <div class="eyebrow"><i class="dot"></i> Minecraft проект lefobox</div>
+      <h1>Добро пожаловать в <span>lefobox</span></h1>
+      <p class="subtitle">
+        Присоединяйся к нашему Minecraft-проекту. Здесь тебя ждут игроки,
+        привилегии и собственное сообщество.
+      </p>
+      <div class="actions">
+        <button class="primary" id="playBtn">Начать играть</button>
+        <button class="secondary" id="donateBtn">Купить донат</button>
+      </div>
+
+      <!-- ГЛАВНЫЙ ЭКРАН: ЗДЕСЬ НЕТ СПИСКА ДОНАТОВ -->
+      <div class="main-note">
+        Данный сайт был разработан владельцами  проекта <strong>leade4k</strong> и <strong>foxik</strong>.<br>
+        При найденных багах просим написать в тг <strong>@leade4k_m</strong> или <strong>@nknx0</strong>.
+      </div>
+    </div>
+  </main>
+
+  <div class="bottom">
+    <span>© lefobox.gomc.fun</span>
+  </div>
+  <button class="contact-bottom" id="contactBtn">Связаться с владельцами</button>
+</div>
+
+<!-- ДОПОЛНИТЕЛЬНАЯ СТРАНИЦА ДОНАТОВ: ИЗНАЧАЛЬНО СКРЫТА -->
+<div class="overlay" id="donateOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="panel">
+    <button class="close" id="donateClose" aria-label="Закрыть донаты"></button>
+    <h2>Донаты</h2>
+    <p class="panel-desc">Выбери привилегию для своего аккаунта</p>
+    <div class="donations">
+      <div class="donation"><div><div class="d-name">prince</div><div class="d-price">1 рубль</div></div><button class="buy">Купить</button></div>
+      <div class="donation"><div><div class="d-name">shulker</div><div class="d-price">3 рубля</div></div><button class="buy">Купить</button></div>
+      <div class="donation"><div><div class="d-name">owner</div><div class="d-price">5 рублей</div></div><button class="buy">Купить</button></div>
+      <div class="donation"><div><div class="d-name">admin</div><div class="d-price">7 рублей</div></div><button class="buy">Купить</button></div>
+      <div class="donation"><div><div class="d-name">xuesos</div><div class="d-price">10 000 000 000 рублей</div></div><button class="buy">Купить</button></div>
+    </div>
+  </section>
+</div>
+
+<!-- НАЧАТЬ ИГРАТЬ -->
+<div class="overlay" id="playOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="panel">
+    <button class="close" id="playClose" aria-label="Закрыть"></button>
+    <div class="ip-box">
+      <h2>TGK lefobox</h2>
+      <p>Нажми кнопку ниже, чтобы открыть канал проекта.</p>
+      <button class="tg-button" id="tgBtn">Открыть ТГК lefobox</button>
+      <a class="tg-link" id="tgLink" href="https://t.me/lefobox" target="_blank" rel="noopener">t.me/lefobox</a>
+
+      <button class="tg-button" id="ipBtn" style="margin-top:22px">Показать IP сервера</button>
+    </div>
+  </section>
+</div>
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>lefobox.gomc.fun</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  color:#fff;
+  background:#06111f;
+  -webkit-font-smoothing:antialiased;
+}
+button{font:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+button{cursor:pointer}
+
+.app{
+  position:relative;width:100%;height:100vh;overflow:hidden;
+  background:
+    radial-gradient(circle at 15% 20%,rgba(0,174,255,.22),transparent 32%),
+    radial-gradient(circle at 85% 80%,rgba(95,45,255,.22),transparent 35%),
+    linear-gradient(135deg,#071b2b,#06101c 55%,#080d20);
+}
+.app:before{
+  content:"";position:absolute;inset:0;opacity:.16;
+  background-image:
+    linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.glow{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none}
+.glow.a{width:330px;height:330px;background:#008dff;left:-130px;top:-100px;opacity:.24}
+.glow.b{width:380px;height:380px;background:#723dff;right:-160px;bottom:-160px;opacity:.2}
+
+nav{
+  position:relative;z-index:10;height:84px;
+  display:flex;align-items:center;justify-content:space-between;
+  max-width:1400px;margin:auto;padding:0 34px;
+}
+.logo{display:flex;align-items:center;gap:11px;font-size:25px;font-weight:800;letter-spacing:-.5px}
+.logo-mark{width:35px;height:35px;border-radius:9px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#35c8ff,#526cff);box-shadow:0 0 25px rgba(30,177,255,.3)}
+.logo-mark:before{content:"L";font-weight:900;font-size:20px}
+.nav-links{display:flex;gap:10px}
+.nav-link,.nav-play{
+  border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);
+  color:#dceeff;border-radius:11px;padding:11px 17px;transition:.25s;
+}
+.nav-link:hover{background:rgba(255,255,255,.1)}
+.nav-play{background:#fff;color:#07101c;font-weight:700}
+
+.hero{
+  position:relative;z-index:2;height:calc(100vh - 84px);
+  max-width:1400px;margin:auto;padding:0 34px 40px;
+  display:flex;align-items:center;
+}
+.hero-content{max-width:760px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 12px;
+  border:1px solid rgba(93,198,255,.2);border-radius:999px;
+  color:#8ddcff;background:rgba(34,161,255,.07);font-size:13px;margin-bottom:20px
+}
+.dot{width:7px;height:7px;border-radius:50%;background:#43d8ff;box-shadow:0 0 12px #43d8ff}
+h1{font-size:clamp(46px,7vw,88px);line-height:.94;letter-spacing:-4px;max-width:760px}
+h1 span{color:#55cfff}
+.subtitle{margin-top:25px;max-width:650px;color:rgba(235,248,255,.65);font-size:18px;line-height:1.55}
+.actions{display:flex;flex-wrap:wrap;gap:13px;margin-top:32px}
+.primary,.secondary{
+  min-height:52px;padding:0 23px;border-radius:13px;border:1px solid transparent;
+  transition:.25s;font-weight:700
+}
+.primary{background:linear-gradient(135deg,#27baff,#516dff);color:#fff;box-shadow:0 10px 35px rgba(42,150,255,.2)}
+.primary:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.secondary{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.12);color:#fff}
+.secondary:hover{background:rgba(255,255,255,.12);transform:translateY(-2px)}
+
+.bottom{
+  position:absolute;z-index:5;left:34px;right:34px;bottom:24px;
+  max-width:1332px;margin:auto;display:flex;justify-content:space-between;align-items:center;
+  color:rgba(255,255,255,.4);font-size:12px
+}
+.contact-bottom{border:0;background:none;color:#9bdfff;text-decoration:underline;cursor:pointer}
+
+.overlay{
+  position:fixed;inset:0;z-index:100;visibility:hidden;opacity:0;
+  transition:opacity .4s ease,visibility .4s ease
+}
+.overlay.open{visibility:visible;opacity:1}
+.overlay-bg{
+  position:absolute;inset:0;background:rgba(2,8,15,.68);
+  backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)
+}
+.panel{
+  position:absolute;left:0;top:0;bottom:0;width:min(610px,94vw);
+  background:linear-gradient(180deg,rgba(9,24,39,.98),rgba(7,15,27,.98));
+  border-right:1px solid rgba(255,255,255,.1);
+  padding:105px 30px 35px;overflow:auto;
+  transform:translateX(-105%);
+  transition:transform .65s cubic-bezier(.16,1,.3,1);
+  box-shadow:30px 0 100px rgba(0,0,0,.5)
+}
+.overlay.open .panel{transform:translateX(0)}
+
+.close{
+  position:absolute;left:22px;top:20px;width:58px;height:58px;
+  border-radius:15px;border:2px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.11);color:#fff;
+  transition:.3s;box-shadow:0 8px 30px rgba(0,0,0,.35)
+}
+.close:hover{transform:rotate(90deg) scale(1.07);background:rgba(255,255,255,.22)}
+.close:before,.close:after{
+  content:"";position:absolute;left:50%;top:50%;width:29px;height:3px;
+  background:#fff;border-radius:5px;box-shadow:0 0 8px #fff;
+}
+.close:before{transform:translate(-50%,-50%) rotate(45deg)}
+.close:after{transform:translate(-50%,-50%) rotate(-45deg)}
+
+.panel h2{font-size:34px;letter-spacing:-1px}
+.panel-desc{margin-top:7px;margin-bottom:24px;color:rgba(255,255,255,.48);font-size:14px}
+.donations{display:flex;flex-direction:column;gap:11px}
+.donation{
+  display:flex;align-items:center;justify-content:space-between;gap:15px;
+  padding:17px;border:1px solid rgba(255,255,255,.09);
+  background:rgba(255,255,255,.055);border-radius:14px;
+  opacity:0;transform:translateX(-35px)
+}
+.overlay.open .donation{opacity:1;transform:none;transition:opacity .45s,transform .55s cubic-bezier(.16,1,.3,1)}
+.overlay.open .donation:nth-child(1){transition-delay:.1s}
+.overlay.open .donation:nth-child(2){transition-delay:.16s}
+.overlay.open .donation:nth-child(3){transition-delay:.22s}
+.overlay.open .donation:nth-child(4){transition-delay:.28s}
+.overlay.open .donation:nth-child(5){transition-delay:.34s}
+.d-name{font-size:18px;font-weight:700}
+.d-price{margin-top:4px;color:#8aa4ba;font-size:14px}
+.buy{border:0;border-radius:10px;padding:10px 17px;background:#754cff;color:#fff;font-weight:700;transition:.25s}
+.buy:hover{transform:translateY(-2px);background:#8d6aff}
+
+.main-note{
+  margin-top:35px;padding:20px;border-radius:16px;
+  border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);
+  color:rgba(235,248,255,.65);line-height:1.65;font-size:14px
+}
+.main-note strong{color:#fff}
+
+.contact-box{
+  position:absolute;left:50%;top:50%;width:min(510px,calc(100vw - 32px));
+  transform:translate(-50%,-46%) scale(.94);
+  background:rgba(10,23,37,.97);border:1px solid rgba(255,255,255,.11);
+  border-radius:22px;padding:88px 24px 25px;box-shadow:0 30px 100px rgba(0,0,0,.55);
+  transition:transform .5s cubic-bezier(.16,1,.3,1)
+}
+.overlay.open .contact-box{transform:translate(-50%,-50%) scale(1)}
+.contact-box .close{top:20px;left:20px}
+.contact-title{text-align:center;font-size:29px}
+.contact-desc{text-align:center;margin:8px 0 23px;color:rgba(255,255,255,.48);font-size:14px}
+.owner-buttons{display:flex;flex-direction:column;gap:11px}
+.owner{
+  width:100%;height:54px;border-radius:13px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.06);color:#fff;font-weight:700;transition:.3s
+}
+.owner:hover{background:rgba(255,255,255,.12);transform:translateX(4px)}
+.owner small{display:block;color:#7f9bb2;font-weight:400;margin-top:3px}
+
+.ip-box{text-align:center;padding-top:20px}
+.ip-box h2{font-size:31px}
+.ip-box p{color:rgba(255,255,255,.48);font-size:14px;margin:8px 0 20px}
+.ip-row{display:flex;gap:9px}
+.ip{
+  flex:1;height:52px;border-radius:12px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(0,0,0,.25);color:#fff;padding:0 14px;font-weight:700
+}
+.copy{height:52px;padding:0 17px;border:0;border-radius:12px;background:#fff;color:#07101c;font-weight:800}
+.copy.ok{background:#58df9b}
+.check{display:inline-block;margin-left:5px;transform:scale(0);transition:.3s}
+.copy.ok .check{transform:scale(1)}
+.tg-button{
+  width:100%;height:53px;border:0;border-radius:13px;background:#794cff;color:#fff;
+  font-weight:800;margin-top:14px;transition:.25s
+}
+.tg-button:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.tg-link{display:none;margin-top:13px;padding:14px;border-radius:12px;background:rgba(255,255,255,.06);color:#82d8ff;text-decoration:none}
+.tg-link.visible{display:block;animation:pop .45s ease}
+
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.hero-content>*{animation:up .8s cubic-bezier(.16,1,.3,1) both}
+.hero-content .eyebrow{animation-delay:.05s}.hero-content h1{animation-delay:.15s}
+.hero-content .subtitle{animation-delay:.28s}.hero-content .actions{animation-delay:.4s}
+
+.contact-bottom{
+  position:absolute;z-index:8;left:50%;bottom:24px;transform:translateX(-50%);
+  min-width:230px;height:52px;padding:0 23px;border-radius:13px;
+  border:1px solid rgba(255,255,255,.12);
+  background:linear-gradient(135deg,#27baff,#516dff);
+  color:#fff;font-weight:700;font-size:15px;
+  box-shadow:0 10px 35px rgba(42,150,255,.2);
+  transition:.25s
+}
+.contact-bottom:hover{transform:translateX(-50%) translateY(-2px);filter:brightness(1.08)}
+.buying-box{
+  position:absolute;left:50%;top:50%;width:min(430px,calc(100vw - 32px));
+  transform:translate(-50%,-46%) scale(.9);
+  background:rgba(10,23,37,.98);border:1px solid rgba(255,255,255,.12);
+  border-radius:22px;padding:82px 25px 30px;text-align:center;
+  box-shadow:0 30px 100px rgba(0,0,0,.6);
+  opacity:0;transition:transform .5s cubic-bezier(.16,1,.3,1),opacity .35s
+}
+.overlay.open .buying-box{transform:translate(-50%,-50%) scale(1);opacity:1}
+.buying-box h2{font-size:35px}
+.buying-box p{margin-top:10px;color:rgba(255,255,255,.55);font-size:16px}
+
+@media(max-width:760px){
+  .contact-bottom{min-width:calc(100vw - 40px);bottom:17px}
+  nav{height:72px;padding:0 18px}.nav-links .nav-link{display:none}.nav-play{padding:9px 13px;font-size:13px}
+  .hero{height:calc(100vh - 72px);padding:0 20px 70px}
+  h1{font-size:48px;letter-spacing:-2.5px}.subtitle{font-size:16px}
+  .bottom{left:20px;right:20px;bottom:17px}.bottom span{display:none}
+  .panel{width:94vw;padding:95px 20px 25px}.panel h2{font-size:29px}
+  .contact-box{padding:86px 18px 20px}.ip-row{flex-direction:column}.copy{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="glow a"></div><div class="glow b"></div>
+
+  <nav>
+    <div class="logo"><div class="logo-mark"></div><span>lefobox.gomc.fun</span></div>
+    <div class="nav-links">
+      <button class="nav-link" id="navDonate">Донаты</button>
+      <button class="nav-play" id="navPlay">Начать играть</button>
+    </div>
+  </nav>
+
+  <main class="hero">
+    <div class="hero-content">
+      <div class="eyebrow"><i class="dot"></i> Minecraft проект lefobox</div>
+      <h1>Добро пожаловать в <span>lefobox</span></h1>
+      <p class="subtitle">
+        Присоединяйся к нашему Minecraft-проекту. Здесь тебя ждут игроки,
+        привилегии и собственное сообщество.
+      </p>
+      <div class="actions">
+        <button class="primary" id="playBtn">Начать играть</button>
+        <button class="secondary" id="donateBtn">Купить донат</button>
+      </div>
+
+      <!-- ГЛАВНЫЙ ЭКРАН: ЗДЕСЬ НЕТ СПИСКА ДОНАТОВ -->
+      <div class="main-note">
+        Данный сайт был разработан овнерами проекта <strong>leade4k</strong> и <strong>foxik</strong>.<br>
+        При найденных багах просим написать в тг <strong>@leade4k_m</strong> или <strong>@nknx0</strong>.
+      </div>
+    </div>
+  </main>
+
+  <div class="bottom">
+    <span>© lefobox.gomc.fun</span>
+  </div>
+  <button class="contact-bottom" id="contactBtn">Связаться с владельцами</button>
+</div>
+
+<!-- ДОПОЛНИТЕЛЬНАЯ СТРАНИЦА ДОНАТОВ: ИЗНАЧАЛЬНО СКРЫТА -->
+<div class="overlay" id="donateOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="panel">
+    <button class="close" id="donateClose" aria-label="Закрыть донаты"></button>
+    <h2>Донаты</h2>
+    <p class="panel-desc">Выбери привилегию для своего аккаунта</p>
+    <div class="donations">
+      <div class="donation"><div><div class="d-name">prince</div><div class="d-price">1 рубль</div></div><button class="buy">Купить</button></div>
+      <div class="donation"><div><div class="d-name">shulker</div><div class="d-price">3 рубля</div></div><button class="buy">Купить</button></div>
+      <div class="donation"><div><div class="d-name">owner</div><div class="d-price">5 рублей</div></div><button class="buy">Купить</button></div>
+      <div class="donation"><div><div class="d-name">admin</div><div class="d-price">7 рублей</div></div><button class="buy">Купить</button></div>
+      <div class="donation"><div><div class="d-name">xuesos</div><div class="d-price">10 рублей</div></div><button class="buy">Купить</button></div>
+    </div>
+  </section>
+</div>
+
+<!-- НАЧАТЬ ИГРАТЬ -->
+<div class="overlay" id="playOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="panel">
+    <button class="close" id="playClose" aria-label="Закрыть"></button>
+    <div class="ip-box">
+      <h2>TGK lefobox</h2>
+      <p>Нажми кнопку ниже, чтобы открыть канал проекта.</p>
+      <button class="tg-button" id="tgBtn">Открыть ТГК lefobox</button>
+      <a class="tg-link" id="tgLink" href="https://t.me/lefobox" target="_blank" rel="noopener">t.me/lefobox</a>
+
+      <button class="tg-button" id="ipBtn" style="margin-top:22px">Показать IP сервера</button>
+    </div>
+  </section>
+</div>
+
+<!-- IP MSGBOX -->
+<div class="overlay" id="ipOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="contact-box">
+    <button class="close" id="ipClose" aria-label="Закрыть"></button>
+    <div class="ip-box">
+      <h2>IP сервера</h2>
+      <p>Подключайся к серверу lefobox.</p>
+      <div class="ip-row">
+        <input class="ip" id="ipValue" value="lefobox.gomc.fun" readonly>
+        <button class="copy" id="copyBtn">Скопировать <span class="check">✓</span></button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- СВЯЗАТЬСЯ С ВЛАДЕЛЬЦАМИ -->
+<div class="overlay" id="contactOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="contact-box">
+    <button class="close" id="contactClose" aria-label="Закрыть окно связи"></button>
+    <h2 class="contact-title">Связаться с владельцами</h2>
+    <p class="contact-desc">Выбери владельца, чтобы открыть Telegram.</p>
+    <div class="owner-buttons">
+      <button class="owner" id="leadeBtn">leade4k<small>@leade4k_m</small></button>
+      <button class="owner" id="foxikBtn">foxik<small>@Nxnk0</small></button>
+    </div>
+  </section>
+</div>
+
+
+<!-- MSGBOX ПОКУПКИ -->
+<div class="overlay" id="buyOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="buying-box">
+    <button class="close" id="buyClose" aria-label="Закрыть"></button>
+    <h2>soon...</h2>
+    <p>Покупка этой привилегии пока недоступна.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const overlays = [$('donateOverlay'),$('playOverlay'),$('ipOverlay'),$('contactOverlay'),$('buyOverlay')];
+
+function openOverlay(el){
+  el.classList.add('open');
+  el.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+}
+function closeOverlay(el){
+  el.classList.remove('open');
+  el.setAttribute('aria-hidden','true');
+  if(!overlays.some(x=>x.classList.contains('open'))) document.body.style.overflow='';
+}
+
+function openDonates(){openOverlay($('donateOverlay'))}
+function openPlay(){openOverlay($('playOverlay'))}
+function openContact(){openOverlay($('contactOverlay'))}
+function openIP(){openOverlay($('ipOverlay'))}
+
+$('donateBtn').onclick=openDonates;
+$('navDonate').onclick=openDonates;
+$('donateClose').onclick=()=>closeOverlay($('donateOverlay'));
+$('donateOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('donateOverlay'));
+
+$('playBtn').onclick=openPlay;
+$('navPlay').onclick=openPlay;
+$('playClose').onclick=()=>closeOverlay($('playOverlay'));
+$('playOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('playOverlay'));
+
+
+document.querySelectorAll('.buy').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const card=btn.closest('.donation');
+    card.style.transform='translateX(18px) scale(.98)';
+    card.style.opacity='.55';
+    btn.textContent='...';
+    setTimeout(()=>{
+      card.style.transform='';
+      card.style.opacity='';
+      btn.textContent='Купить';
+      openOverlay($('buyOverlay'));
+    },520);
+  });
+});
+$('buyClose').onclick=()=>closeOverlay($('buyOverlay'));
+$('buyOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('buyOverlay'));
+
+$('contactBtn').onclick=openContact;
+$('contactClose').onclick=()=>closeOverlay($('contactOverlay'));
+$('contactOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('contactOverlay'));
+
+$('ipBtn').onclick=openIP;
+$('ipClose').onclick=()=>closeOverlay($('ipOverlay'));
+$('ipOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('ipOverlay'));
+
+$('tgBtn').onclick=()=>{
+  const btn=$('tgBtn');
+  btn.disabled=true;
+  btn.textContent='Открываем...';
+  btn.style.transform='scale(.96)';
+  setTimeout(()=>{
+    $('tgLink').classList.add('visible');
+    btn.disabled=false;
+    btn.textContent='Открыть ТГК lefobox';
+    btn.style.transform='';
+    window.open('https://t.me/lefobox','_blank','noopener');
+  },650);
+};
+
+$('copyBtn').onclick=async()=>{
+  try{await navigator.clipboard.writeText('lefobox.gomc.fun')}
+  catch{
+    const i=$('ipValue');i.select();document.execCommand('copy');
+  }
+  const b=$('copyBtn');
+  b.classList.add('ok');
+  b.innerHTML='Скопировано <span class="check">✓</span>';
+  setTimeout(()=>{
+    closeOverlay($('ipOverlay'));
+    b.classList.remove('ok');
+    b.innerHTML='Скопировать <span class="check">✓</span>';
+  },4000);
+};
+
+function tgOpen(url,button){
+  button.style.transform='scale(.93)';
+  button.style.opacity='.6';
+  setTimeout(()=>{
+    button.style.transform='';
+    button.style.opacity='';
+    window.open(url,'_blank','noopener');
+  },260);
+}
+$('leadeBtn').onclick=()=>tgOpen('https://t.me/leade4k_m',$('leadeBtn'));
+$('foxikBtn').onclick=()=>tgOpen('https://t.me/Nxnk0',$('foxikBtn'));
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    overlays.forEach(closeOverlay);
+  }
+});
+</script>
+</body>
+</html>
+
+<!-- IP MSGBOX -->
+<div class="overlay" id="ipOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="contact-box">
+    <button class="close" id="ipClose" aria-label="Закрыть"></button>
+    <div class="ip-box">
+      <h2>IP сервера</h2>
+      <p>Подключайся к серверу lefobox.</p>
+      <div class="ip-row">
+        <input class="ip" id="ipValue" value="lefobox.gomc.fun" readonly>
+        <button class="copy" id="copyBtn">Скопировать <span class="check">✓</span></button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- СВЯЗАТЬСЯ С ВЛАДЕЛЬЦАМИ -->
+<div class="overlay" id="contactOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="contact-box">
+    <button class="close" id="contactClose" aria-label="Закрыть окно связи"></button>
+    <h2 class="contact-title">Связаться с владельцами</h2>
+    <p class="contact-desc">Выбери владельца, чтобы открыть Telegram.</p>
+    <div class="owner-buttons">
+      <button class="owner" id="leadeBtn">leade4k<small>@leade4k_m</small></button>
+      <button class="owner" id="foxikBtn">foxik<small>@Nxnk0</small></button>
+    </div>
+  </section>
+</div>
+
+
+<!-- MSGBOX ПОКУПКИ -->
+<div class="overlay" id="buyOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="buying-box">
+    <button class="close" id="buyClose" aria-label="Закрыть"></button>
+    <h2>soon...</h2>
+    <p>Покупка этой привилегии пока недоступна.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const overlays = [$('donateOverlay'),$('playOverlay'),$('ipOverlay'),$('contactOverlay'),$('buyOverlay')];
+
+function openOverlay(el){
+  el.classList.add('open');
+  el.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+}
+function closeOverlay(el){
+  el.classList.remove('open');
+  el.setAttribute('aria-hidden','true');
+  if(!overlays.some(x=>x.classList.contains('open'))) document.body.style.overflow='';
+}
+
+function openDonates(){openOverlay($('donateOverlay'))}
+function openPlay(){openOverlay($('playOverlay'))}
+function openContact(){openOverlay($('contactOverlay'))}
+function openIP(){openOverlay($('ipOverlay'))}
+
+$('donateBtn').onclick=openDonates;
+$('navDonate').onclick=openDonates;
+$('donateClose').onclick=()=>closeOverlay($('donateOverlay'));
+$('donateOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('donateOverlay'));
+
+$('playBtn').onclick=openPlay;
+$('navPlay').onclick=openPlay;
+$('playClose').onclick=()=>closeOverlay($('playOverlay'));
+$('playOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('playOverlay'));
+
+
+document.querySelectorAll('.buy').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const card=btn.closest('.donation');
+    card.style.transform='translateX(18px) scale(.98)';
+    card.style.opacity='.55';
+    btn.textContent='...';
+    setTimeout(()=>{
+      card.style.transform='';
+      card.style.opacity='';
+      btn.textContent='Купить';
+      openOverlay($('buyOverlay'));
+    },520);
+  });
+});
+$('buyClose').onclick=()=>closeOverlay($('buyOverlay'));
+$('buyOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('buyOverlay'));
+
+$('contactBtn').onclick=openContact;
+$('contactClose').onclick=()=>closeOverlay($('contactOverlay'));
+$('contactOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('contactOverlay'));
+
+$('ipBtn').onclick=openIP;
+$('ipClose').onclick=()=>closeOverlay($('ipOverlay'));
+$('ipOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('ipOverlay'));
+
+$('tgBtn').onclick=()=>{
+  const btn=$('tgBtn');
+  btn.disabled=true;
+  btn.textContent='Открываем...';
+  btn.style.transform='scale(.96)';
+  setTimeout(()=>{
+    $('tgLink').classList.add('visible');
+    btn.disabled=false;
+    btn.textContent='Открыть ТГК lefobox';
+    btn.style.transform='';
+    window.open('https://t.me/lefobox','_blank','noopener');
+  },650);
+};
+
+$('copyBtn').onclick=async()=>{
+  try{await navigator.clipboard.writeText('lefobox.gomc.fun')}
+  catch{
+    const i=$('ipValue');i.select();document.execCommand('copy');
+  }
+  const b=$('copyBtn');
+  b.classList.add('ok');
+  b.innerHTML='Скопировано <span class="check">✓</span>';
+  setTimeout(()=>{
+    closeOverlay($('ipOverlay'));
+    b.classList.remove('ok');
+    b.innerHTML='Скопировать <span class="check">✓</span>';
+  },4000);
+};
+
+function tgOpen(url,button){
+  button.style.transform='scale(.93)';
+  button.style.opacity='.6';
+  setTimeout(()=>{
+    button.style.transform='';
+    button.style.opacity='';
+    window.open(url,'_blank','noopener');
+  },260);
+}
+$('leadeBtn').onclick=()=>tgOpen('https://t.me/leade4k_m',$('leadeBtn'));
+$('foxikBtn').onclick=()=>tgOpen('https://t.me/Nxnk0',$('foxikBtn'));
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    overlays.forEach(closeOverlay);
+  }
+});
+</script>
+</body>
+</html>
