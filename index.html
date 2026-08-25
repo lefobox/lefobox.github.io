@@ -1,0 +1,1249 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="Paritypay" content="6a8a8e103185d">
+<title>lefobox.gomc.fun</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  color:#fff;
+  background:#06111f;
+  -webkit-font-smoothing:antialiased;
+}
+button{font:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+button{cursor:pointer}
+
+.app{
+  position:relative;width:100%;height:100vh;overflow:hidden;
+  background:
+    radial-gradient(circle at 15% 20%,rgba(0,174,255,.22),transparent 32%),
+    radial-gradient(circle at 85% 80%,rgba(95,45,255,.22),transparent 35%),
+    linear-gradient(135deg,#071b2b,#06101c 55%,#080d20);
+}
+.app:before{
+  content:"";position:absolute;inset:0;opacity:.16;
+  background-image:
+    linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.glow{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none}
+.glow.a{width:330px;height:330px;background:#008dff;left:-130px;top:-100px;opacity:.24}
+.glow.b{width:380px;height:380px;background:#723dff;right:-160px;bottom:-160px;opacity:.2}
+
+nav{
+  position:relative;z-index:10;height:84px;
+  display:flex;align-items:center;justify-content:space-between;
+  max-width:1400px;margin:auto;padding:0 34px;
+}
+.logo{display:flex;align-items:center;gap:11px;font-size:25px;font-weight:800;letter-spacing:-.5px}
+.logo-mark{width:35px;height:35px;border-radius:9px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#35c8ff,#526cff);box-shadow:0 0 25px rgba(30,177,255,.3)}
+.logo-mark:before{content:"L";font-weight:900;font-size:20px}
+.nav-links{display:flex;gap:10px}
+.nav-link,.nav-play{
+  border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);
+  color:#dceeff;border-radius:11px;padding:11px 17px;transition:.25s;
+}
+.nav-link:hover{background:rgba(255,255,255,.1)}
+.nav-play{background:#fff;color:#07101c;font-weight:700}
+
+.hero{
+  position:relative;z-index:2;height:calc(100vh - 84px);
+  max-width:1400px;margin:auto;padding:0 34px 40px;
+  display:flex;align-items:center;
+}
+.hero-content{max-width:760px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 12px;
+  border:1px solid rgba(93,198,255,.2);border-radius:999px;
+  color:#8ddcff;background:rgba(34,161,255,.07);font-size:13px;margin-bottom:20px
+}
+.dot{width:7px;height:7px;border-radius:50%;background:#43d8ff;box-shadow:0 0 12px #43d8ff}
+h1{font-size:clamp(46px,7vw,88px);line-height:.94;letter-spacing:-4px;max-width:760px}
+h1 span{color:#55cfff}
+.subtitle{margin-top:25px;max-width:650px;color:rgba(235,248,255,.65);font-size:18px;line-height:1.55}
+.actions{display:flex;flex-wrap:wrap;gap:13px;margin-top:32px}
+.primary,.secondary{
+  min-height:52px;padding:0 23px;border-radius:13px;border:1px solid transparent;
+  transition:.25s;font-weight:700
+}
+.primary{background:linear-gradient(135deg,#27baff,#516dff);color:#fff;box-shadow:0 10px 35px rgba(42,150,255,.2)}
+.primary:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.secondary{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.12);color:#fff}
+.secondary:hover{background:rgba(255,255,255,.12);transform:translateY(-2px)}
+
+.bottom{
+  position:absolute;z-index:5;left:34px;right:34px;bottom:24px;
+  max-width:1332px;margin:auto;display:flex;justify-content:space-between;align-items:center;
+  color:rgba(255,255,255,.4);font-size:12px
+}
+.contact-bottom{border:0;background:none;color:#9bdfff;text-decoration:underline;cursor:pointer}
+
+.overlay{
+  position:fixed;inset:0;z-index:1002;visibility:hidden;opacity:0;
+  transition:opacity .4s ease,visibility .4s ease
+}
+.overlay.open{visibility:visible;opacity:1}
+.overlay-bg{
+  position:absolute;inset:0;background:rgba(2,8,15,.68);
+  backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)
+}
+.panel{
+  position:absolute;left:0;top:0;bottom:0;width:min(610px,94vw);
+  background:linear-gradient(180deg,rgba(9,24,39,.98),rgba(7,15,27,.98));
+  border-right:1px solid rgba(255,255,255,.1);
+  padding:105px 30px 35px;overflow:auto;
+  transform:translateX(-105%);
+  transition:transform .65s cubic-bezier(.16,1,.3,1);
+  box-shadow:30px 0 100px rgba(0,0,0,.5)
+}
+.overlay.open .panel{transform:translateX(0)}
+
+.close{
+  position:absolute;left:22px;top:20px;width:58px;height:58px;
+  border-radius:15px;border:2px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.11);color:#fff;
+  transition:.3s;box-shadow:0 8px 30px rgba(0,0,0,.35)
+}
+.close:hover{transform:rotate(90deg) scale(1.07);background:rgba(255,255,255,.22)}
+.close:before,.close:after{
+  content:"";position:absolute;left:50%;top:50%;width:29px;height:3px;
+  background:#fff;border-radius:5px;box-shadow:0 0 8px #fff;
+}
+.close:before{transform:translate(-50%,-50%) rotate(45deg)}
+.close:after{transform:translate(-50%,-50%) rotate(-45deg)}
+
+.panel h2{font-size:34px;letter-spacing:-1px}
+.panel-desc{margin-top:7px;margin-bottom:24px;color:rgba(255,255,255,.48);font-size:14px}
+.donations{display:flex;flex-direction:column;gap:11px}
+.donation{
+  display:flex;align-items:center;justify-content:space-between;gap:15px;
+  padding:17px;border:1px solid rgba(255,255,255,.09);
+  background:rgba(255,255,255,.055);border-radius:14px;
+  opacity:0;transform:translateX(-35px)
+}
+.overlay.open .donation{opacity:1;transform:none;transition:opacity .45s,transform .55s cubic-bezier(.16,1,.3,1)}
+.overlay.open .donation:nth-child(1){transition-delay:.1s}
+.overlay.open .donation:nth-child(2){transition-delay:.16s}
+.overlay.open .donation:nth-child(3){transition-delay:.22s}
+.overlay.open .donation:nth-child(4){transition-delay:.28s}
+.overlay.open .donation:nth-child(5){transition-delay:.34s}
+.d-name{font-size:18px;font-weight:700}
+.d-name.rainbow{
+  background:linear-gradient(90deg,#ff3b30,#ff9500,#ffd60a,#34c759,#00c7be,#30a2ff,#8b5cf6,#ff3b30);
+  background-size:250% auto;-webkit-background-clip:text;background-clip:text;
+  color:transparent;animation:rainbowMove 3.5s linear infinite;
+}
+@keyframes rainbowMove{to{background-position:250% center}}
+.d-price{margin-top:4px;color:#8aa4ba;font-size:14px}
+.d-buttons{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.buy{
+  border:0;border-radius:10px;padding:10px 17px;background:#754cff;color:#fff;font-weight:700;
+  transition:.25s;position:relative;min-width:88px;display:inline-flex;align-items:center;justify-content:center
+}
+.buy:hover{transform:translateY(-2px);background:#8d6aff}
+.buy:disabled{cursor:default;opacity:.85}
+.buy .dot-loader{display:none;gap:4px;align-items:center;justify-content:center}
+.buy.loading .label{display:none}
+.buy.loading .dot-loader{display:flex}
+.dot-loader i{width:6px;height:6px;border-radius:50%;background:#fff;opacity:.35;animation:dotPulse 1s infinite ease-in-out}
+.dot-loader i:nth-child(2){animation-delay:.15s}
+.dot-loader i:nth-child(3){animation-delay:.3s}
+@keyframes dotPulse{0%,80%,100%{opacity:.35;transform:scale(.75)}40%{opacity:1;transform:scale(1.2)}}
+.buy-tg{
+  border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:10px 14px;
+  background:rgba(255,255,255,.06);color:#dceeff;font-weight:700;font-size:13px;transition:.25s
+}
+.buy-tg:hover{transform:translateY(-2px);background:rgba(255,255,255,.13)}
+.buy-da{
+  border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:10px 14px;
+  background:rgba(255,255,255,.06);color:#dceeff;font-weight:700;font-size:13px;transition:.25s
+}
+.buy-da:hover{transform:translateY(-2px);background:rgba(255,255,255,.13)}
+
+.main-note{
+  margin-top:35px;padding:20px;border-radius:16px;
+  border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);
+  color:rgba(235,248,255,.65);line-height:1.65;font-size:14px
+}
+.main-note strong{color:#fff}
+
+.contact-box{
+  position:absolute;left:50%;top:50%;width:min(510px,calc(100vw - 32px));
+  transform:translate(-50%,-46%) scale(.94);
+  background:rgba(10,23,37,.97);border:1px solid rgba(255,255,255,.11);
+  border-radius:22px;padding:88px 24px 25px;box-shadow:0 30px 100px rgba(0,0,0,.55);
+  transition:transform .5s cubic-bezier(.16,1,.3,1)
+}
+.overlay.open .contact-box{transform:translate(-50%,-50%) scale(1)}
+.contact-box .close{top:20px;left:20px}
+.contact-title{text-align:center;font-size:29px}
+.contact-desc{text-align:center;margin:8px 0 23px;color:rgba(255,255,255,.48);font-size:14px}
+.owner-buttons{display:flex;flex-direction:column;gap:11px}
+.owner{
+  width:100%;height:54px;border-radius:13px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.06);color:#fff;font-weight:700;transition:.3s
+}
+.owner:hover{background:rgba(255,255,255,.12);transform:translateX(4px)}
+.owner small{display:block;color:#7f9bb2;font-weight:400;margin-top:3px}
+
+.ip-box{text-align:center;padding-top:20px}
+.ip-box h2{font-size:31px}
+.ip-box p{color:rgba(255,255,255,.48);font-size:14px;margin:8px 0 20px}
+.ip-row{display:flex;gap:9px}
+.ip{
+  flex:1;height:52px;border-radius:12px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(0,0,0,.25);color:#fff;padding:0 14px;font-weight:700
+}
+.copy{height:52px;padding:0 17px;border:0;border-radius:12px;background:#fff;color:#07101c;font-weight:800}
+.copy.ok{background:#58df9b}
+.check{display:inline-block;margin-left:5px;transform:scale(0);transition:.3s}
+.copy.ok .check{transform:scale(1)}
+.tg-button{
+  width:100%;height:53px;border:0;border-radius:13px;background:#794cff;color:#fff;
+  font-weight:800;margin-top:14px;transition:.25s
+}
+.tg-button:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.tg-link{display:none;margin-top:13px;padding:14px;border-radius:12px;background:rgba(255,255,255,.06);color:#82d8ff;text-decoration:none}
+.tg-link.visible{display:block;animation:pop .45s ease}
+
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.hero-content>*{animation:up .8s cubic-bezier(.16,1,.3,1) both}
+.hero-content .eyebrow{animation-delay:.05s}.hero-content h1{animation-delay:.15s}
+.hero-content .subtitle{animation-delay:.28s}.hero-content .actions{animation-delay:.4s}
+
+.contact-bottom{
+  position:absolute;z-index:8;left:50%;bottom:24px;transform:translateX(-50%);
+  min-width:230px;height:52px;padding:0 23px;border-radius:13px;
+  border:1px solid rgba(255,255,255,.12);
+  background:linear-gradient(135deg,#27baff,#516dff);
+  color:#fff;font-weight:700;font-size:15px;
+  box-shadow:0 10px 35px rgba(42,150,255,.2);
+  transition:.25s
+}
+.contact-bottom:hover{transform:translateX(-50%) translateY(-2px);filter:brightness(1.08)}
+.buying-box{
+  position:absolute;left:50%;top:50%;width:min(430px,calc(100vw - 32px));
+  transform:translate(-50%,-46%) scale(.9);
+  background:rgba(10,23,37,.98);border:1px solid rgba(255,255,255,.12);
+  border-radius:22px;padding:82px 25px 30px;text-align:center;
+  box-shadow:0 30px 100px rgba(0,0,0,.6);
+  opacity:0;transition:transform .5s cubic-bezier(.16,1,.3,1),opacity .35s
+}
+.overlay.open .buying-box{transform:translate(-50%,-50%) scale(1);opacity:1}
+.buying-box h2{font-size:35px}
+.buying-box p{margin-top:10px;color:rgba(255,255,255,.55);font-size:16px}
+
+.warn-title{
+  color:#ff5c5c;font-weight:900;font-size:15px;letter-spacing:1.5px;text-transform:uppercase;
+  margin-bottom:12px;
+}
+.warn-progress{height:4px;border-radius:3px;background:rgba(255,255,255,.12);margin-top:22px;overflow:hidden}
+.warn-progress-bar{height:100%;width:100%;background:linear-gradient(135deg,#ff5c5c,#ff9a5c);transition:width 3s linear}
+
+
+/* ===== ПОКУПКА ВАЛЮТЫ ===== */
+.currency-buy-btn{
+  width:100%;height:54px;margin-top:18px;border:1px solid rgba(255,255,255,.12);
+  border-radius:13px;background:linear-gradient(135deg,#27baff,#516dff);
+  color:#fff;font-weight:800;font-size:15px;box-shadow:0 10px 35px rgba(42,150,255,.18);
+  transition:.25s;
+}
+.currency-buy-btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.currency-box{
+  position:absolute;left:50%;top:50%;width:min(500px,calc(100vw - 32px));
+  transform:translate(-50%,-46%) scale(.9);opacity:0;
+  background:rgba(10,23,37,.98);border:1px solid rgba(255,255,255,.12);
+  border-radius:22px;padding:82px 26px 30px;text-align:center;
+  box-shadow:0 30px 100px rgba(0,0,0,.6);
+  transition:transform .5s cubic-bezier(.16,1,.3,1),opacity .35s;
+}
+.overlay.open .currency-box{transform:translate(-50%,-50%) scale(1);opacity:1}
+.currency-box h2{font-size:32px;letter-spacing:-1px}
+.currency-desc{margin:8px 0 24px;color:rgba(255,255,255,.5);font-size:14px}
+.currency-value{
+  font-size:38px;font-weight:900;color:#8ddcff;
+  text-shadow:0 0 18px rgba(93,198,255,.3);margin-bottom:4px;
+}
+.currency-price{font-size:21px;font-weight:800;margin-bottom:25px}
+.currency-price span{color:#8ddcff}
+.currency-range{
+  width:100%;accent-color:#4dc3ff;cursor:pointer;margin:8px 0 10px;
+}
+.currency-limits{display:flex;justify-content:space-between;color:rgba(255,255,255,.38);font-size:12px}
+.currency-buy-action{
+  width:100%;height:54px;margin-top:24px;border:0;border-radius:13px;
+  background:#794cff;color:#fff;font-weight:800;transition:.25s;
+}
+.currency-buy-action:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.soon-box{
+  position:absolute;left:50%;top:50%;width:min(410px,calc(100vw - 32px));
+  transform:translate(-50%,-46%) scale(.9);opacity:0;
+  background:rgba(10,23,37,.98);border:1px solid rgba(255,255,255,.12);
+  border-radius:22px;padding:55px 25px 28px;text-align:center;
+  box-shadow:0 30px 100px rgba(0,0,0,.6);
+  transition:transform .5s cubic-bezier(.16,1,.3,1),opacity .35s;
+}
+.overlay.open .soon-box{transform:translate(-50%,-50%) scale(1);opacity:1}
+.soon-box h2{font-size:36px;text-transform:lowercase}
+.soon-box p{margin-top:10px;color:rgba(255,255,255,.5);font-size:14px}
+.soon-actions{display:flex;gap:10px;margin-top:25px}
+.soon-actions button{flex:1;height:52px;border-radius:12px;font-weight:800;transition:.25s}
+.soon-contact{border:0;background:#794cff;color:#fff}
+.soon-later{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#fff}
+.soon-actions button:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.goodbye-toast{
+  position:fixed;left:50%;top:50%;z-index:3000;
+  transform:translate(-50%,-50%) scale(.82);opacity:0;visibility:hidden;
+  padding:24px 34px;border-radius:18px;background:rgba(10,23,37,.97);
+  border:1px solid rgba(255,255,255,.12);box-shadow:0 25px 80px rgba(0,0,0,.55);
+  font-size:24px;font-weight:800;pointer-events:none;
+  transition:opacity .35s ease,transform .45s cubic-bezier(.16,1,.3,1),visibility .35s;
+}
+.goodbye-toast.show{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}
+.goodbye-toast.hide{opacity:0;transform:translate(-50%,-50%) scale(.7)}
+@media(max-width:560px){
+  .soon-actions{flex-direction:column}
+  .currency-box{padding-left:20px;padding-right:20px}
+}
+
+@media(max-width:760px){
+  .contact-bottom{min-width:calc(100vw - 40px);bottom:17px}
+  nav{height:72px;padding:0 18px}.nav-links .nav-link{display:none}.nav-play{padding:9px 13px;font-size:13px}
+  .hero{height:calc(100vh - 72px);padding:0 20px 70px}
+  h1{font-size:48px;letter-spacing:-2.5px}.subtitle{font-size:16px}
+  .bottom{left:20px;right:20px;bottom:17px}.bottom span{display:none}
+  .panel{width:94vw;padding:95px 20px 25px}.panel h2{font-size:29px}
+  .contact-box{padding:86px 18px 20px}.ip-row{flex-direction:column}.copy{width:100%}
+}
+
+/* ===== ПАРОЛЬНЫЙ ГЕЙТ / СОГЛАСИЕ (общий каркас) ===== */
+.gate-overlay{
+  position:fixed;inset:0;z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  background:
+    radial-gradient(circle at 15% 20%,rgba(0,174,255,.22),transparent 32%),
+    radial-gradient(circle at 85% 80%,rgba(95,45,255,.22),transparent 35%),
+    linear-gradient(135deg,#071b2b,#06101c 55%,#080d20);
+  transition:opacity .5s ease,visibility .5s ease;
+}
+.gate-overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.gate-overlay:before{
+  content:"";position:absolute;inset:0;opacity:.16;
+  background-image:
+    linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.gate-card{
+  position:relative;z-index:2;width:min(420px,92vw);
+  background:rgba(10,23,37,.97);border:1px solid rgba(255,255,255,.11);
+  border-radius:22px;padding:40px 30px 34px;
+  box-shadow:0 30px 100px rgba(0,0,0,.55);
+  text-align:center;
+  animation:up .7s cubic-bezier(.16,1,.3,1) both;
+}
+.gate-card .logo-mark{width:52px;height:52px;border-radius:14px;margin:0 auto 18px}
+.gate-card .logo-mark:before{font-size:26px}
+.gate-card h1{font-size:24px;letter-spacing:-.5px;margin-bottom:8px;line-height:1.2}
+.gate-desc{color:rgba(235,248,255,.55);font-size:14px;margin-bottom:26px;line-height:1.5}
+
+.gate-start-btn{
+  width:100%;height:54px;border-radius:13px;border:0;
+  background:linear-gradient(135deg,#27baff,#516dff);color:#fff;font-weight:700;font-size:15px;
+  box-shadow:0 10px 35px rgba(42,150,255,.25);
+  transition:.25s;
+}
+.gate-start-btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+
+.code-display{
+  margin:0 auto 20px;padding:16px 10px;border-radius:14px;
+  background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);
+  font-size:34px;font-weight:800;letter-spacing:10px;
+  color:#8ddcff;text-shadow:0 0 18px rgba(93,198,255,.5);
+  user-select:none;
+}
+.gate-step{display:none}
+.gate-step.active{display:block}
+
+.gate-field{position:relative;margin-bottom:16px}
+.gate-input{
+  width:100%;height:54px;border-radius:13px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.25);color:#fff;padding:0 16px;
+  font-size:17px;letter-spacing:6px;text-align:center;
+  transition:.25s;outline:none;
+}
+.gate-input:focus{border-color:#4dc3ff;box-shadow:0 0 0 3px rgba(77,195,255,.15)}
+.gate-input.shake{animation:shake .45s}
+@keyframes shake{
+  10%,90%{transform:translateX(-2px)}
+  20%,80%{transform:translateX(4px)}
+  30%,50%,70%{transform:translateX(-8px)}
+  40%,60%{transform:translateX(8px)}
+}
+.gate-submit{
+  width:100%;height:54px;border-radius:13px;border:0;
+  background:linear-gradient(135deg,#27baff,#516dff);color:#fff;font-weight:700;font-size:15px;
+  box-shadow:0 10px 35px rgba(42,150,255,.25);
+  transition:.25s;position:relative;overflow:hidden;
+}
+.gate-submit:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.08)}
+.gate-submit:disabled{cursor:default;opacity:.85}
+.gate-submit .label{transition:opacity .2s}
+.gate-submit.loading .label{opacity:0}
+.gate-spinner{
+  position:absolute;left:50%;top:50%;width:22px;height:22px;
+  margin:-11px 0 0 -11px;border-radius:50%;
+  border:3px solid rgba(255,255,255,.35);border-top-color:#fff;
+  opacity:0;transition:opacity .2s;
+  animation:spin .8s linear infinite;
+}
+.gate-submit.loading .gate-spinner{opacity:1}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Чекбоксы согласия */
+.consent-row{
+  display:flex;align-items:flex-start;gap:10px;text-align:left;
+  margin-bottom:14px;font-size:14px;color:rgba(235,248,255,.75);line-height:1.5;cursor:pointer
+}
+.consent-row input[type=checkbox]{
+  appearance:none;-webkit-appearance:none;width:20px;height:20px;min-width:20px;
+  border-radius:6px;border:1.5px solid rgba(255,255,255,.3);background:rgba(0,0,0,.25);
+  cursor:pointer;position:relative;transition:.2s;margin-top:1px
+}
+.consent-row input[type=checkbox]:checked{background:linear-gradient(135deg,#27baff,#516dff);border-color:transparent}
+.consent-row input[type=checkbox]:checked:after{
+  content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;
+  border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)
+}
+.legal-link{background:none;border:0;color:#8ddcff;text-decoration:underline;cursor:pointer;font:inherit;padding:0}
+.legal-link:hover{color:#b7e9ff}
+
+/* Кнопки политики/соглашения на главном экране */
+.legal-buttons{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.legal-btn{
+  border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(235,248,255,.7);
+  border-radius:10px;padding:9px 14px;font-size:12.5px;transition:.25s
+}
+.legal-btn:hover{background:rgba(255,255,255,.1);color:#fff;transform:translateY(-2px)}
+
+/* Окно с текстом документа */
+.legal-box{
+  position:absolute;left:50%;top:50%;width:min(620px,calc(100vw - 32px));max-height:80vh;
+  transform:translate(-50%,-46%) scale(.95);
+  background:rgba(10,23,37,.98);border:1px solid rgba(255,255,255,.11);
+  border-radius:22px;padding:88px 26px 30px;box-shadow:0 30px 100px rgba(0,0,0,.55);
+  transition:transform .5s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column
+}
+.overlay.open .legal-box{transform:translate(-50%,-50%) scale(1)}
+.legal-box h2{font-size:23px;margin-bottom:16px}
+.legal-scroll{overflow-y:auto;padding-right:10px;color:rgba(235,248,255,.75);font-size:14px;line-height:1.7}
+.legal-scroll h3{color:#fff;font-size:15px;margin:16px 0 6px}
+.legal-scroll p{margin-bottom:10px}
+.legal-scroll strong{color:#fff}
+.legal-scroll::-webkit-scrollbar{width:6px}
+.legal-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+
+/* Живые часы */
+.live-clock{
+  display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;
+  border:1px solid rgba(93,198,255,.2);background:rgba(34,161,255,.07);color:#8ddcff;
+  font-size:13px;font-weight:700;letter-spacing:.5px
+}
+
+#gateResult{
+  position:fixed;inset:0;z-index:1001;display:flex;align-items:center;justify-content:center;
+  background:rgba(2,8,15,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease;
+}
+#gateResult.show{opacity:1;visibility:visible}
+.gate-result-icon{width:110px;height:110px}
+.g-circle{fill:none;stroke-width:5;stroke-linecap:round}
+.g-circle-ok{stroke:#58df9b;stroke-dasharray:300;stroke-dashoffset:300;animation:gCircleDraw .5s ease forwards}
+.g-circle-bad{stroke:#ff5c5c;stroke-dasharray:300;stroke-dashoffset:300;animation:gCircleDraw .5s ease forwards}
+@keyframes gCircleDraw{to{stroke-dashoffset:0}}
+.g-check{fill:none;stroke:#58df9b;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:60;stroke-dashoffset:60;animation:gCheckDraw .35s ease .45s forwards}
+@keyframes gCheckDraw{to{stroke-dashoffset:0}}
+.g-cross line{stroke:#ff5c5c;stroke-width:6;stroke-linecap:round;
+  stroke-dasharray:40;stroke-dashoffset:40;animation:gCheckDraw .3s ease forwards}
+.g-cross line:nth-child(2){animation-delay:.15s}
+.g-cross line:first-child{animation-delay:.45s}
+.gate-result-text{margin-top:22px;font-size:17px;font-weight:700;text-align:center}
+.gate-result-text.ok{color:#58df9b}
+.gate-result-text.bad{color:#ff5c5c}
+.gate-result-sub{margin-top:6px;color:rgba(255,255,255,.5);font-size:13px;text-align:center}
+.gate-result-inner{display:flex;flex-direction:column;align-items:center}
+
+body.locked .app{filter:blur(6px);pointer-events:none;user-select:none}
+</style>
+
+<style id="footer-scroll-fix">
+  html, body {
+    min-height: 100%;
+    height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+  }
+  body {
+    min-height: 100vh;
+  }
+  .site-footer {
+    width: 100%;
+    padding: 28px 20px 32px;
+    text-align: center;
+    position: relative;
+    z-index: 5;
+    box-sizing: border-box;
+  }
+  .footer-ceo,
+  .footer-checkup {
+    color: rgba(255,255,255,.78);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .footer-checkup {
+    margin-top: 4px;
+    font-weight: 600;
+  }
+</style>
+
+</head>
+<body class="locked">
+
+<!-- ===== КАПЧА (показывается первой) ===== -->
+<div id="gate" class="gate-overlay">
+  <div class="gate-card">
+    <div class="logo-mark"></div>
+    <h1>lefobox.gomc.fun</h1>
+
+    <!-- Шаг 1: кнопка запуска проверки -->
+    <div class="gate-step active" id="stepStart">
+      <p class="gate-desc">Подтвердите, что вы не робот, чтобы попасть на сайт</p>
+      <button type="button" class="gate-start-btn" id="startBtn">Пройти проверку</button>
+    </div>
+
+    <!-- Шаг 2: показ кода и ввод -->
+    <div class="gate-step" id="stepCode">
+      <p class="gate-desc">Введите комбинацию цифр, которую видите ниже</p>
+      <div class="code-display" id="codeDisplay">000000</div>
+      <form id="gateForm">
+        <div class="gate-field">
+          <input type="text" id="gateInput" class="gate-input" placeholder="______" inputmode="numeric" autocomplete="off" maxlength="6">
+        </div>
+        <button type="submit" class="gate-submit" id="gateSubmitBtn">
+          <span class="label">Подтвердить</span>
+          <span class="gate-spinner"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="gateResult">
+  <div class="gate-result-inner" id="gateResultInner"></div>
+</div>
+
+<!-- ===== СОГЛАСИЕ С ПОЛИТИКОЙ И СОГЛАШЕНИЕМ ===== -->
+<div id="consentGate" class="gate-overlay hidden">
+  <div class="gate-card">
+    <div class="logo-mark"></div>
+    <h1>Перед входом</h1>
+    <p class="gate-desc">Пожалуйста, подтвердите согласие с условиями использования сайта</p>
+
+    <label class="consent-row">
+      <input type="checkbox" id="policyCheck">
+      <span>Я принимаю <button type="button" class="legal-link" id="policyLinkBtn">Политику конфиденциальности</button></span>
+    </label>
+    <label class="consent-row">
+      <input type="checkbox" id="termsCheck">
+      <span>Я принимаю <button type="button" class="legal-link" id="termsLinkBtn">Пользовательское соглашение</button></span>
+    </label>
+
+    <button type="button" class="gate-start-btn" id="consentAcceptBtn">Принять</button>
+    <button type="button" class="gate-start-btn" id="consentDeclineBtn" style="margin-top:10px;background:rgba(255,255,255,.08);box-shadow:none;border:1px solid rgba(255,255,255,.15)">Отказаться</button>
+  </div>
+</div>
+
+<div class="app">
+  <div class="glow a"></div><div class="glow b"></div>
+
+  <nav>
+    <div class="logo"><div class="logo-mark"></div><span>lefobox.gomc.fun</span></div>
+    <div class="live-clock" id="liveClock">--:--:----</div>
+    <div class="nav-links">
+      <button class="nav-link" id="navDonate">Донаты</button>
+      <button class="nav-play" id="navPlay">Начать играть</button>
+    </div>
+  </nav>
+
+  <main class="hero">
+    <div class="hero-content">
+      <div class="eyebrow"><i class="dot"></i> Minecraft проект lefobox</div>
+      <h1>Добро пожаловать в <span>lefobox</span></h1>
+      <p class="subtitle">
+        Присоединяйся к нашему Minecraft-проекту. Здесь тебя ждут игроки,
+        привилегии и собственное сообщество.
+      </p>
+      <div class="actions">
+        <button class="primary" id="playBtn">Начать играть</button>
+        <button class="secondary" id="donateBtn">Купить донат</button>
+      </div>
+
+      <div class="main-note">
+        Данный сайт был разработан  проекта <strong>leade4k</strong> и <strong>foxik</strong>.<br>
+        При найденных багах просим написать в тг <strong>@leade4k_m</strong> или <strong>@nknx0</strong>.
+      </div>
+
+      <div class="legal-buttons">
+        <button type="button" class="legal-btn" id="policyBtnMain">Политика конфиденциальности</button>
+        <button type="button" class="legal-btn" id="termsBtnMain">Пользовательское соглашение</button>
+      </div>
+    </div>
+  </main>
+
+  <div class="bottom">
+    <span>© lefobox.gomc.fun</span>
+  </div>
+  <button class="contact-bottom" id="contactBtn">Связаться с владельцами</button>
+</div>
+
+<!-- ДОНАТЫ -->
+<div class="overlay" id="donateOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="panel">
+    <button class="close" id="donateClose" aria-label="Закрыть донаты"></button>
+    <h2>Донаты</h2>
+    <p class="panel-desc">Выбери привилегию для своего аккаунта</p>
+    <div class="donations">
+      <div class="donation">
+        <div><div class="d-name">prince</div><div class="d-price">10 рублей</div></div>
+        <div class="d-buttons">
+          <button class="buy" data-url="https://funpay.com/lots/offer?id=46067215"><span class="label">Купить</span><span class="dot-loader"><i></i><i></i><i></i></span></button>
+          <button class="buy-tg">Купить через ТГ</button><button class="buy-da">Купить через D.Alerts</button>
+        </div>
+      </div>
+      <div class="donation">
+        <div><div class="d-name">shulker</div><div class="d-price">25 рублей</div></div>
+        <div class="d-buttons">
+          <button class="buy" data-url="https://funpay.com/lots/offer?id=75661320"><span class="label">Купить</span><span class="dot-loader"><i></i><i></i><i></i></span></button>
+          <button class="buy-tg">Купить через ТГ</button><button class="buy-da">Купить через D.Alerts</button>
+        </div>
+      </div>
+      <div class="donation">
+        <div><div class="d-name">ghost</div><div class="d-price">40 рублей</div></div>
+        <div class="d-buttons">
+          <button class="buy" data-url="https://funpay.com/lots/offer?id=75661440"><span class="label">Купить</span><span class="dot-loader"><i></i><i></i><i></i></span></button>
+          <button class="buy-tg">Купить через ТГ</button><button class="buy-da">Купить через D.Alerts</button>
+        </div>
+      </div>
+      <div class="donation">
+        <div><div class="d-name">god</div><div class="d-price">70 рублей</div></div>
+        <div class="d-buttons">
+          <button class="buy" data-url="https://funpay.com/lots/offer?id=75661754"><span class="label">Купить</span><span class="dot-loader"><i></i><i></i><i></i></span></button>
+          <button class="buy-tg">Купить через ТГ</button><button class="buy-da">Купить через D.Alerts</button>
+        </div>
+      </div>
+      <div class="donation">
+        <div><div class="d-name rainbow">custom</div><div class="d-price">150 рублей</div></div>
+        <div class="d-buttons">
+          <button class="buy" data-url="https://funpay.com/lots/offer?id=75662926"><span class="label">Купить</span><span class="dot-loader"><i></i><i></i><i></i></span></button>
+          <button class="buy-tg">Купить через ТГ</button><button class="buy-da">Купить через D.Alerts</button>
+        </div>
+      </div>
+    </div>
+    <button class="currency-buy-btn" id="currencyOpenBtn">Купить валюту</button>
+  </section>
+</div>
+
+<!-- ПОКУПКА ВАЛЮТЫ -->
+<div class="overlay" id="currencyOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="currency-box">
+    <button class="close" id="currencyClose" aria-label="Закрыть покупку валюты"></button>
+    <h2>Купить валюту</h2>
+    <p class="currency-desc">Выбери количество валюты ползунком</p>
+    <div class="currency-value" id="currencyAmount">100</div>
+    <div class="currency-price">Цена: <span id="currencyPrice">40</span> рублей</div>
+    <input class="currency-range" id="currencyRange" type="range" min="100" max="10000" step="100" value="100">
+    <div class="currency-limits"><span>100</span><span>10000</span></div>
+    <button class="currency-buy-action" id="currencyBuyBtn">Купить</button>
+  </section>
+</div>
+
+<!-- MSGBOX SOON -->
+<div class="overlay" id="soonOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="soon-box">
+    <h2>soon</h2>
+    <p>Покупка валюты пока недоступна.</p>
+    <div class="soon-actions">
+      <button class="soon-contact" id="soonContactBtn">Купить у владельцев</button>
+      <button class="soon-later" id="soonLaterBtn">Купить позже</button>
+    </div>
+  </section>
+</div>
+
+<div class="goodbye-toast" id="goodbyeToast">до свидания!</div>
+
+<!-- НАЧАТЬ ИГРАТЬ -->
+<div class="overlay" id="playOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="panel">
+    <button class="close" id="playClose" aria-label="Закрыть"></button>
+    <div class="ip-box">
+      <h2>TGK lefobox</h2>
+      <p>Нажми кнопку ниже, чтобы открыть канал проекта.</p>
+      <button class="tg-button" id="tgBtn">Открыть ТГК lefobox</button>
+      <a class="tg-link" id="tgLink" href="https://t.me/lefobox" target="_blank" rel="noopener">t.me/lefobox</a>
+
+      <button class="tg-button" id="ipBtn" style="margin-top:22px">Показать IP сервера</button>
+    </div>
+  </section>
+</div>
+
+<!-- IP MSGBOX -->
+<div class="overlay" id="ipOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="contact-box">
+    <button class="close" id="ipClose" aria-label="Закрыть"></button>
+    <div class="ip-box">
+      <h2>IP сервера</h2>
+      <p>Подключайся к серверу lefobox.</p>
+      <div class="ip-row">
+        <input class="ip" id="ipValue" value="lefobox.gomc.fun" readonly>
+        <button class="copy" id="copyBtn">Скопировать <span class="check">✓</span></button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- СВЯЗАТЬСЯ С ВЛАДЕЛЬЦАМИ -->
+<div class="overlay" id="contactOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="contact-box">
+    <button class="close" id="contactClose" aria-label="Закрыть окно связи"></button>
+    <h2 class="contact-title">Связаться с владельцами</h2>
+    <p class="contact-desc">Выбери владельца, чтобы открыть Telegram.</p>
+    <div class="owner-buttons">
+      <button class="owner" id="leadeBtn">leade4k<small>@leade4k_m</small></button>
+      <button class="owner" id="foxikBtn">foxik<small>@Nxnk0</small></button>
+    </div>
+  </section>
+</div>
+
+<!-- MSGBOX ПРЕДУПРЕЖДЕНИЯ О ПОКУПКЕ -->
+<div class="overlay" id="warnOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="buying-box">
+    <div class="warn-title">Предупреждение</div>
+    <p>Покупатель, когда вы покупаете донат на FunPay, вся комиссия на вас.</p>
+    <div class="warn-progress"><div class="warn-progress-bar" id="warnProgressBar"></div></div>
+  </section>
+</div>
+
+<!-- MSGBOX ПОКУПКИ ЧЕРЕЗ D.ALERTS -->
+<div class="overlay" id="dalertsOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="contact-box">
+    <button class="close" id="dalertsClose" aria-label="Закрыть"></button>
+    <div class="warn-title" style="text-align:center;font-size:18px">Предупреждение!!!</div>
+    <p class="contact-desc" style="text-align:left;margin-top:14px;line-height:1.6">
+      При покупке через DonationAlerts вы должны кидать ровно сумму доната.
+      Больше или меньше — вероятнее всего донат будет не засчитан.
+      Если же вы отправили неправильную сумму — свяжитесь с владельцами.
+    </p>
+    <div class="owner-buttons" style="margin-top:24px">
+      <button class="owner" id="dalertsBuyBtn">Перейти к покупке</button>
+      <button class="owner" id="dalertsContactBtn">Написать владельцам</button>
+    </div>
+  </section>
+</div>
+
+<!-- MSGBOX: СОГЛАСИЕ НЕ ПРИНЯТО -->
+<div class="overlay" id="consentWarnOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="buying-box">
+    <div class="warn-title">Предупреждение</div>
+    <p>Вы не приняли Политику конфиденциальности или Пользовательское соглашение.</p>
+    <button type="button" class="gate-start-btn" id="declineBtn" style="margin-top:22px;background:linear-gradient(135deg,#ff5c5c,#ff8a5c)">Отказаться</button>
+  </section>
+</div>
+
+<!-- MSGBOX С ТЕКСТОМ ДОКУМЕНТА -->
+<div class="overlay" id="legalOverlay" aria-hidden="true">
+  <div class="overlay-bg"></div>
+  <section class="legal-box">
+    <button class="close" id="legalClose" aria-label="Закрыть"></button>
+    <h2 id="legalTitle">Документ</h2>
+    <div class="legal-scroll" id="legalContent"></div>
+  </section>
+</div>
+
+<script>
+/* ============ КАПЧА ============ */
+(function(){
+  var gate = document.getElementById('gate');
+  var stepStart = document.getElementById('stepStart');
+  var stepCode = document.getElementById('stepCode');
+  var startBtn = document.getElementById('startBtn');
+  var codeDisplay = document.getElementById('codeDisplay');
+
+  var form = document.getElementById('gateForm');
+  var input = document.getElementById('gateInput');
+  var btn = document.getElementById('gateSubmitBtn');
+  var resultOverlay = document.getElementById('gateResult');
+  var resultInner = document.getElementById('gateResultInner');
+
+  var currentCode = '';
+  var busy = false;
+
+  var okSVG =
+    '<svg class="gate-result-icon" viewBox="0 0 120 120">' +
+      '<circle class="g-circle g-circle-ok" cx="60" cy="60" r="48"/>' +
+      '<path class="g-check" d="M38 62 L54 78 L84 44"/>' +
+    '</svg>' +
+    '<div class="gate-result-text ok">Проверка пройдена</div>' +
+    '<div class="gate-result-sub">Переходим дальше...</div>';
+
+  var badSVG =
+    '<svg class="gate-result-icon" viewBox="0 0 120 120">' +
+      '<circle class="g-circle g-circle-bad" cx="60" cy="60" r="48"/>' +
+      '<g class="g-cross">' +
+        '<line x1="42" y1="42" x2="78" y2="78"/>' +
+        '<line x1="78" y1="42" x2="42" y2="78"/>' +
+      '</g>' +
+    '</svg>' +
+    '<div class="gate-result-text bad">Неверная комбинация</div>' +
+    '<div class="gate-result-sub">Доступ отклонён</div>';
+
+  function generateCode(){
+    var code = '';
+    for (var i = 0; i < 6; i++){
+      code += Math.floor(Math.random() * 10);
+    }
+    return code;
+  }
+
+  function showCodeStep(){
+    currentCode = generateCode();
+    codeDisplay.textContent = currentCode;
+    stepStart.classList.remove('active');
+    stepCode.classList.add('active');
+    input.value = '';
+    setTimeout(function(){ input.focus(); }, 50);
+  }
+
+  function resetToStart(){
+    stepCode.classList.remove('active');
+    stepStart.classList.add('active');
+    gate.classList.remove('hidden');
+    busy = false;
+    btn.disabled = false;
+    input.disabled = false;
+  }
+  window.resetCaptchaFlow = resetToStart;
+
+  function proceedToConsent(){
+    gate.classList.add('hidden');
+    document.getElementById('consentGate').classList.remove('hidden');
+  }
+
+  startBtn.addEventListener('click', showCodeStep);
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (busy) return;
+
+    var value = input.value.trim();
+    busy = true;
+    btn.disabled = true;
+    btn.classList.add('loading');
+    input.disabled = true;
+
+    setTimeout(function(){
+      btn.classList.remove('loading');
+
+      if (value === currentCode){
+        resultInner.innerHTML = okSVG;
+        resultOverlay.classList.add('show');
+        setTimeout(function(){
+          resultOverlay.classList.remove('show');
+          proceedToConsent();
+        }, 1400);
+      } else {
+        resultInner.innerHTML = badSVG;
+        resultOverlay.classList.add('show');
+        setTimeout(function(){
+          resultOverlay.classList.remove('show');
+          busy = false;
+          btn.disabled = false;
+          input.disabled = false;
+          resetToStart();
+        }, 1400);
+      }
+    }, 900);
+  });
+})();
+
+/* ============ ОСНОВНОЙ СКРИПТ САЙТА ============ */
+const $ = id => document.getElementById(id);
+const overlays = [$('donateOverlay'),$('playOverlay'),$('ipOverlay'),$('contactOverlay'),$('warnOverlay'),$('dalertsOverlay'),$('consentWarnOverlay'),$('legalOverlay'),$('currencyOverlay'),$('soonOverlay')];
+
+function openOverlay(el){
+  el.classList.add('open');
+  el.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+}
+function closeOverlay(el){
+  el.classList.remove('open');
+  el.setAttribute('aria-hidden','true');
+  if(!overlays.some(x=>x.classList.contains('open'))) document.body.style.overflow='';
+}
+
+function openDonates(){openOverlay($('donateOverlay'))}
+function openPlay(){openOverlay($('playOverlay'))}
+function openContact(){openOverlay($('contactOverlay'))}
+function openIP(){openOverlay($('ipOverlay'))}
+
+$('donateBtn').onclick=openDonates;
+$('navDonate').onclick=openDonates;
+$('donateClose').onclick=()=>closeOverlay($('donateOverlay'));
+$('donateOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('donateOverlay'));
+
+$('playBtn').onclick=openPlay;
+$('navPlay').onclick=openPlay;
+$('playClose').onclick=()=>closeOverlay($('playOverlay'));
+$('playOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('playOverlay'));
+
+
+/* ===== ПОКУПКА ВАЛЮТЫ ===== */
+const currencyRange = $('currencyRange');
+const currencyAmount = $('currencyAmount');
+const currencyPrice = $('currencyPrice');
+
+function updateCurrencyPrice(){
+  const amount = Number(currencyRange.value);
+  currencyAmount.textContent = amount.toLocaleString('ru-RU');
+  currencyPrice.textContent = (amount * 0.4).toLocaleString('ru-RU', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2
+  });
+}
+currencyRange.addEventListener('input', updateCurrencyPrice);
+updateCurrencyPrice();
+
+$('currencyOpenBtn').onclick=()=>{
+  closeOverlay($('donateOverlay'));
+  openOverlay($('currencyOverlay'));
+};
+$('currencyClose').onclick=()=>closeOverlay($('currencyOverlay'));
+$('currencyOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('currencyOverlay'));
+
+$('currencyBuyBtn').onclick=()=>{
+  closeOverlay($('currencyOverlay'));
+  openOverlay($('soonOverlay'));
+};
+$('soonOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('soonOverlay'));
+
+$('soonContactBtn').onclick=()=>{
+  closeOverlay($('soonOverlay'));
+  openContact();
+};
+
+$('soonLaterBtn').onclick=()=>{
+  closeOverlay($('soonOverlay'));
+  const toast = $('goodbyeToast');
+  toast.classList.remove('hide');
+  toast.classList.add('show');
+
+  setTimeout(()=>{
+    toast.classList.remove('show');
+    toast.classList.add('hide');
+
+    setTimeout(()=>{
+      toast.classList.remove('hide');
+      overlays.forEach(closeOverlay);
+      document.body.style.overflow='';
+      window.scrollTo(0,0);
+    }, 420);
+  }, 900);
+};
+
+/* Кнопка "Купить": анимация из трёх точек -> окно предупреждения -> переход на FunPay */
+document.querySelectorAll('.buy').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    if (btn.disabled) return;
+    const url = btn.dataset.url;
+    btn.disabled = true;
+    btn.classList.add('loading');
+    setTimeout(()=>{
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      openWarningBox(url);
+    }, 1100);
+  });
+});
+
+function openWarningBox(url){
+  const overlay = $('warnOverlay');
+  const bar = $('warnProgressBar');
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+  openOverlay(overlay);
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      bar.style.transition = 'width 3s linear';
+      bar.style.width = '0%';
+    });
+  });
+  setTimeout(()=>{
+    closeOverlay(overlay);
+    window.open(url,'_blank','noopener');
+  }, 3000);
+}
+$('warnOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('warnOverlay'));
+
+/* Кнопка "Купить через D.Alerts" */
+document.querySelectorAll('.buy-da').forEach(btn=>{
+  btn.addEventListener('click', ()=>openOverlay($('dalertsOverlay')));
+});
+$('dalertsClose').onclick=()=>closeOverlay($('dalertsOverlay'));
+$('dalertsOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('dalertsOverlay'));
+$('dalertsBuyBtn').onclick=()=>tgOpen('https://dalink.to/lefobox_gomc_fun',$('dalertsBuyBtn'));
+$('dalertsContactBtn').onclick=()=>{
+  closeOverlay($('dalertsOverlay'));
+  setTimeout(openContact, 350);
+};
+
+/* Кнопка "Купить через ТГ": то же окно, что и "Связаться с владельцами" */
+document.querySelectorAll('.buy-tg').forEach(btn=>{
+  btn.addEventListener('click', openContact);
+});
+
+$('contactBtn').onclick=openContact;
+$('contactClose').onclick=()=>closeOverlay($('contactOverlay'));
+$('contactOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('contactOverlay'));
+
+$('ipBtn').onclick=openIP;
+$('ipClose').onclick=()=>closeOverlay($('ipOverlay'));
+$('ipOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('ipOverlay'));
+
+$('tgBtn').onclick=()=>{
+  const btn=$('tgBtn');
+  btn.disabled=true;
+  btn.textContent='Открываем...';
+  btn.style.transform='scale(.96)';
+  setTimeout(()=>{
+    $('tgLink').classList.add('visible');
+    btn.disabled=false;
+    btn.textContent='Открыть ТГК lefobox';
+    btn.style.transform='';
+    window.open('https://t.me/lefobox','_blank','noopener');
+  },650);
+};
+
+$('copyBtn').onclick=async()=>{
+  try{await navigator.clipboard.writeText('lefobox.gomc.fun')}
+  catch{
+    const i=$('ipValue');i.select();document.execCommand('copy');
+  }
+  const b=$('copyBtn');
+  b.classList.add('ok');
+  b.innerHTML='Скопировано <span class="check">✓</span>';
+  setTimeout(()=>{
+    closeOverlay($('ipOverlay'));
+    b.classList.remove('ok');
+    b.innerHTML='Скопировать <span class="check">✓</span>';
+  },4000);
+};
+
+function tgOpen(url,button){
+  button.style.transform='scale(.93)';
+  button.style.opacity='.6';
+  setTimeout(()=>{
+    button.style.transform='';
+    button.style.opacity='';
+    window.open(url,'_blank','noopener');
+  },260);
+}
+$('leadeBtn').onclick=()=>tgOpen('https://t.me/leade4k_m',$('leadeBtn'));
+$('foxikBtn').onclick=()=>tgOpen('https://t.me/Nxnk0',$('foxikBtn'));
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    overlays.forEach(closeOverlay);
+  }
+});
+
+/* ============ СОГЛАСИЕ С ПОЛИТИКОЙ И СОГЛАШЕНИЕМ ============ */
+const consentGate = $('consentGate');
+const policyCheck = $('policyCheck');
+const termsCheck = $('termsCheck');
+
+$('consentAcceptBtn').onclick = () => {
+  if (policyCheck.checked && termsCheck.checked){
+    consentGate.classList.add('hidden');
+    document.body.classList.remove('locked');
+  } else {
+    openOverlay($('consentWarnOverlay'));
+  }
+};
+$('consentWarnOverlay').querySelector('.overlay-bg').onclick=()=>closeOverlay($('consentWarnOverlay'));
+
+function restartCaptcha(){
+  consentGate.classList.add('hidden');
+  policyCheck.checked = false;
+  termsCheck.checked = false;
+  if (typeof window.resetCaptchaFlow === 'function') window.resetCaptchaFlow();
+}
+
+$('declineBtn').onclick = () => {
+  const btn = $('declineBtn');
+  btn.disabled = true;
+  btn.style.opacity = '.7';
+  closeOverlay($('consentWarnOverlay'));
+  setTimeout(()=>{
+    restartCaptcha();
+    btn.disabled = false;
+    btn.style.opacity = '';
+  }, 350);
+};
+
+$('consentDeclineBtn').onclick = () => {
+  const btn = $('consentDeclineBtn');
+  btn.disabled = true;
+  btn.style.transform = 'scale(.96)';
+  btn.style.opacity = '.7';
+  setTimeout(()=>{
+    restartCaptcha();
+    btn.disabled = false;
+    btn.style.transform = '';
+    btn.style.opacity = '';
+  }, 350);
+};
+
+/* ============ ТЕКСТЫ ДОКУМЕНТОВ ============ */
+const policyHTML = `
+  <p><em>Дата публикации: 1 августа 2026</em></p>
+  <p>Политика конфиденциальности регулирует сбор, использование и защиту информации пользователей сервиса lefobox.gomc.fun. Собираются идентификаторы аккаунта, техническая информация и история взаимодействий. Данные используются для обеспечения работы сервиса, связи с пользователем и анализа. Передача информации третьим лицам возможна только в законодательно установленных случаях или с согласия пользователя. Хранение данных осуществляется в течение необходимого срока, их защита — в разумных пределах. Пользователь самостоятельно несёт ответственность за риски, связанные с передачей данных. Администрация вправе вносить изменения в Политику без уведомления — согласие считается принятым при дальнейшем использовании сервиса.</p>
+
+  <h3>1. Общие положения</h3>
+  <p>1.1. Настоящая Политика конфиденциальности (далее — «Политика») регулирует порядок обработки и защиты информации, которую Пользователь передаёт при использовании сервиса lefobox.gomc.fun (далее — «Сервис»).</p>
+  <p>1.2. Используя Сервис, Пользователь подтверждает своё согласие с условиями Политики. Если Пользователь не согласен с условиями — он обязан прекратить использование Сервиса.</p>
+
+  <h3>2. Сбор информации</h3>
+  <p>2.1. Сервис может собирать следующие типы данных: идентификаторы аккаунта (логин, ID, никнейм и т.п.); техническую информацию (IP-адрес, данные о браузере, устройстве и операционной системе); историю взаимодействий с Сервисом.</p>
+  <p>2.2. Сервис не требует от Пользователя предоставления паспортных данных, документов, фотографий или другой личной информации, кроме минимально необходимой для работы.</p>
+
+  <h3>3. Использование информации</h3>
+  <p>3.1. Сервис может использовать полученную информацию исключительно для: обеспечения работы функционала; связи с Пользователем (в том числе для уведомлений и поддержки); анализа и улучшения работы Сервиса.</p>
+
+  <h3>4. Передача информации третьим лицам</h3>
+  <p>4.1. Администрация не передаёт полученные данные третьим лицам, за исключением случаев: если это требуется по закону; если это необходимо для исполнения обязательств перед Пользователем (например, при работе с платёжными системами); если Пользователь сам дал на это согласие.</p>
+
+  <h3>5. Хранение и защита данных</h3>
+  <p>5.1. Данные хранятся в течение срока, необходимого для достижения целей обработки.</p>
+  <p>5.2. Администрация принимает разумные меры для защиты данных, но не гарантирует абсолютную безопасность информации при передаче через интернет.</p>
+
+  <h3>6. Отказ от ответственности</h3>
+  <p>6.1. Пользователь понимает и соглашается, что передача информации через интернет всегда сопряжена с рисками.</p>
+  <p>6.2. Администрация не несёт ответственности за утрату, кражу или раскрытие данных, если это произошло по вине третьих лиц или самого Пользователя.</p>
+
+  <h3>7. Изменения в Политике</h3>
+  <p>7.1. Администрация вправе изменять условия Политики без предварительного уведомления.</p>
+  <p>7.2. Продолжение использования Сервиса после внесения изменений означает согласие Пользователя с новой редакцией Политики.</p>
+`;
+
+const termsHTML = `
+  <p><em>Дата публикации: 1 августа 2026</em></p>
+
+  <h3>1. Общие положения</h3>
+  <p>1.1. Настоящее Пользовательское соглашение (далее — «Соглашение») регулирует порядок использования онлайн-сервиса lefobox.gomc.fun (далее — «Сервис»), предоставляемого Администрацией.</p>
+  <p>1.2. Используя Сервис, включая регистрацию, оплату услуг или получение доступа к материалам, Пользователь подтверждает, что полностью ознакомился с условиями настоящего Соглашения и принимает их в полном объёме.</p>
+  <p>1.3. В случае несогласия с условиями Соглашения Пользователь обязан прекратить использование Сервиса.</p>
+
+  <h3>2. Характер услуг и цифровых товаров</h3>
+  <p>2.1. Сервис предоставляет цифровые товары и услуги нематериального характера, включая, но не ограничиваясь: игровые привилегии, информационные материалы и сервисные услуги.</p>
+  <p>2.2. Пользователь осознаёт и соглашается, что ценность цифровых товаров и услуг Сервиса заключается в систематизации, форме подачи, сопровождении, поддержке и обновлениях.</p>
+  <p>2.3. Сервис не заявляет и не гарантирует уникальность, исключительность или недоступность отдельных элементов материалов вне Сервиса.</p>
+
+  <h3>3. Отказ от гарантий и ответственности</h3>
+  <p>3.1. Сервис предоставляется на условиях «как есть».</p>
+  <p>3.2. Администрация не гарантирует: соответствие Сервиса ожиданиям Пользователя; достижение каких-либо результатов; бесперебойную и безошибочную работу Сервиса.</p>
+  <p>3.3. Администрация не несёт ответственности за прямые или косвенные убытки, последствия применения Пользователем полученных материалов, действия третьих лиц, временные технические сбои.</p>
+  <p>3.4. Все решения о применении материалов, рекомендаций и услуг принимаются Пользователем самостоятельно и на его риск.</p>
+
+  <h3>4. Законность использования</h3>
+  <p>4.1. Сервис не предназначен для поощрения, организации или содействия противоправной деятельности.</p>
+  <p>4.2. Пользователь обязуется использовать Сервис исключительно в рамках применимого законодательства.</p>
+
+  <h3>5. Интеллектуальная собственность</h3>
+  <p>5.1. Все материалы, размещённые в Сервисе, охраняются законодательством об интеллектуальной собственности.</p>
+  <p>5.2. Пользователю запрещается копировать, распространять, перепродавать или иным образом использовать материалы Сервиса без разрешения правообладателя.</p>
+
+  <h3>6. Ограничение доступа</h3>
+  <p>6.1. Администрация вправе приостановить или ограничить доступ Пользователя к Сервису в случае нарушения условий настоящего Соглашения, выявления злоупотреблений или требований законодательства.</p>
+  <p>6.2. Ограничение доступа не освобождает Пользователя от обязательств, возникших ранее.</p>
+
+  <h3>7. Платежи и возвраты</h3>
+  <p>7.1. Оплата услуг и цифровых товаров производится на условиях, указанных в Сервисе до момента оплаты.</p>
+  <p>7.2. В связи с нематериальным характером цифровых товаров, возврат денежных средств после предоставления доступа не осуществляется, за исключением случаев, указанных ниже.</p>
+  <p>7.3. Возврат средств возможен только если услуга не была оказана по технической вине Сервиса, либо доступ к цифровому товару фактически не был предоставлен.</p>
+  <p>7.4. Для рассмотрения вопроса о возврате Пользователь обязан обратиться в службу поддержки в течение 24 часов с момента оплаты.</p>
+  <p>7.5. Пользователь подтверждает, что обязуется не инициировать возврат платежа (chargeback) через платёжные системы без предварительного обращения в поддержку Сервиса.</p>
+
+  <h3>8. Конфиденциальность</h3>
+  <p>8.1. Администрация может собирать минимально необходимые технические данные для обеспечения работы Сервиса.</p>
+  <p>8.2. Администрация принимает разумные меры для защиты данных, однако не гарантирует абсолютную безопасность передаваемой информации.</p>
+
+  <h3>9. Изменение условий</h3>
+  <p>9.1. Администрация вправе вносить изменения в настоящее Соглашение.</p>
+  <p>9.2. Продолжение использования Сервиса означает согласие Пользователя с обновлёнными условиями.</p>
+
+  <h3>10. Контактная информация</h3>
+  <p>10.1. По всем вопросам Пользователь может обратиться к владельцам через кнопку «Связаться с владельцами» на сайте.</p>
+
+  <p><strong>Используя Сервис, Пользователь подтверждает, что ознакомлен с настоящим Соглашением и принимает его условия в полном объёме.</strong></p>
+`;
+
+function openLegal(title, html){
+  $('legalTitle').textContent = title;
+  $('legalContent').innerHTML = html;
+  $('legalContent').scrollTop = 0;
+  openOverlay($('legalOverlay'));
+}
+$('legalClose').onclick = () => closeOverlay($('legalOverlay'));
+$('legalOverlay').querySelector('.overlay-bg').onclick = () => closeOverlay($('legalOverlay'));
+
+$('policyLinkBtn').onclick = () => openLegal('Политика конфиденциальности', policyHTML);
+$('termsLinkBtn').onclick = () => openLegal('Пользовательское соглашение', termsHTML);
+$('policyBtnMain').onclick = () => openLegal('Политика конфиденциальности', policyHTML);
+$('termsBtnMain').onclick = () => openLegal('Пользовательское соглашение', termsHTML);
+
+/* ============ ЖИВЫЕ ЧАСЫ (день:месяц:год) ============ */
+function updateClock(){
+  const now = new Date();
+  const dd = String(now.getDate()).padStart(2,'0');
+  const mm = String(now.getMonth()+1).padStart(2,'0');
+  const yyyy = now.getFullYear();
+  $('liveClock').textContent = `${dd}:${mm}:${yyyy}`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+
+<footer class="site-footer">
+  <div class="footer-ceo">CEO : leade4k, foxik</div>
+  <div class="footer-checkup">чекап</div>
+</footer>
+
+</body>
+</html>
