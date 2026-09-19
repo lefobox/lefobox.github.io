@@ -83,6 +83,30 @@ h1 span{color:#55cfff}
   max-width:1332px;margin:auto;display:flex;justify-content:space-between;align-items:center;
   color:rgba(255,255,255,.4);font-size:12px
 }
+
+/* ===== ССЫЛКА НА МОНИТОРИНГ ===== */
+.monitoring-link{
+  color:rgba(141,220,255,.75);
+  text-decoration:none;
+  font-size:12px;
+  padding:6px 14px;
+  border-radius:999px;
+  border:1px solid rgba(93,198,255,.18);
+  background:rgba(34,161,255,.06);
+  transition:.3s cubic-bezier(.19,1,.22,1);
+  white-space:nowrap;
+}
+.monitoring-link:hover{
+  color:#fff;
+  background:rgba(34,161,255,.15);
+  border-color:rgba(93,198,255,.45);
+  box-shadow:0 0 18px rgba(42,150,255,.25);
+  transform:translateY(-2px);
+}
+.monitoring-link:active{
+  transform:scale(.96);
+}
+
 .contact-bottom{border:0;background:none;color:#9bdfff;text-decoration:underline;cursor:pointer}
 
 .overlay{
@@ -950,10 +974,12 @@ body.locked .app{filter:blur(6px);pointer-events:none;user-select:none}
 
   <div class="bottom">
     <span>© lefobox.gomc.fun</span>
-  <a href="https://monitoringminecraft.com/server/lefobox/" target="_blank" rel="noopener" class="monitoring-link">
+    <a href="https://monitoringminecraft.com/server/lefobox/" target="_blank" rel="noopener" class="monitoring-link">
       Lefobox — мониторинг серверов Майнкрафт
     </a>
   </div>
+  <button class="contact-bottom" id="contactBtn">Связаться с владельцами</button>
+</div>
 
 <!-- ДОНАТЫ -->
 <div class="overlay" id="donateOverlay" aria-hidden="true">
